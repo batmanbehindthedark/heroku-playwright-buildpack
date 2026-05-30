@@ -42,16 +42,16 @@ install_system_deps() {
 		"heroku-22")
 			libgdk_pixbuf="libgdk-pixbuf-2.0-0"
 			;;
-		"heroku-24")
+		"heroku-24"|"heroku-26")
 			libasound="libasound2t64"
 			libatk_bridge="libatk-bridge2.0-0t64"
 			libatk="libatk1.0-0t64"
 			libatspi="libatspi2.0-0t64"
-			libgtk="libgtk-30t64"
+			libgtk="libgtk-3-0t64"
 			libgdk_pixbuf="libgdk-pixbuf-2.0-0"
 			;;
 		*)
-			error "STACK must be 'heroku-18', 'heroku-20', 'heroku-22', or 'heroku-24'"
+			error "STACK must be 'heroku-18', 'heroku-20', 'heroku-22', 'heroku-24', or 'heroku-26'"
 			;;
 	esac
 
@@ -121,8 +121,13 @@ EOF
 libvpx9
 EOF
 	    ;;
+		"heroku-26")
+	    cat << EOF >>$build_tmpdir/Aptfile
+libvpx12
+EOF
+	    ;;
 	  *)
-	    error "STACK must be 'heroku-18', 'heroku-20', 'heroku-22', or 'heroku-24'"
+	    error "STACK must be 'heroku-18', 'heroku-20', 'heroku-22', or 'heroku-24', or 'heroku-26'"
 	esac
 
 	local cache_tmpdir=$(mktemp -d)
