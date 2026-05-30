@@ -2,6 +2,14 @@
 
 This buildpack installs all the needed dependencies to use Playwright with Chromium and Firefox on Heroku.
 
+## Supported Stacks
+
+- Heroku-18
+- Heroku-20
+- Heroku-22
+- Heroku-24 (Ubuntu 24.04)
+- Heroku-26 (Ubuntu 26.04)
+
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/mxschmitt/heroku-playwright-example)
 
 ## Usage
@@ -45,7 +53,7 @@ For Firefox, you can refer to the official examples, no need to adjust any confi
 const { firefox } = require("playwright-firefox");
 
 (async () => {
-  const browser = await chromium.launch();
+  const browser = await firefox.launch();
   const context = await browser.newContext();
   const page = await context.newPage();
   await page.goto("http://whatsmyuseragent.org/");
