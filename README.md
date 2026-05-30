@@ -10,7 +10,7 @@ This buildpack installs all the needed dependencies to use Playwright with Chrom
 - Heroku-24 (Ubuntu 24.04)
 - Heroku-26 (Ubuntu 26.04)
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/mxschmitt/heroku-playwright-example)
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/batmanbehindthedark/heroku-playwright-example)
 
 ## Usage
 
@@ -20,7 +20,7 @@ For using this buildpack, you have to add the buildpack **before** installing yo
 heroku buildpacks:set https://github.com/mxschmitt/heroku-playwright-buildpack.git -a my-app
 ```
 
-For a full example, see [here](https://github.com/mxschmitt/heroku-playwright-example) a usage with the Express library.
+For a full example, see [here](https://github.com/batmanbehindthedark/heroku-playwright-example) a usage with the Express library.
 
 It's common to use the `PLAYWRIGHT_BUILDPACK_BROWSERS` environment variable which accepts a comma-separated list of the browser names (`chromium`, `firefox`, `webkit`). By default, it's installing the dependencies for all the browsers. To only install Chromium dependencies for example, just set it to `chromium`. This will reduce the slug size in the end too.
 
