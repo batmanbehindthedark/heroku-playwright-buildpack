@@ -29,19 +29,45 @@ install_system_deps() {
 	SUPPORTED_BROWSERS=${PLAYWRIGHT_BUILDPACK_BROWSERS:-chromium,firefox,webkit}
 	echo "Installing Playwright dependencies (env: PLAYWRIGHT_BUILDPACK_BROWSERS) for $SUPPORTED_BROWSERS."
 
+	local libasound="libasound2"
+	local libatk_bridge="libatk-bridge2.0-0"
+	local libatk="libatk1.0-0"
+	local libatspi="libatspi2.0-0"
+	local libgtk="libgtk-3-0"
+	local libgdk_pixbuf="libgdk-pixbuf2.0-0"
+
+	case "$STACK" in
+		"heroku-18"|"heroku-20")
+			;;
+		"heroku-22")
+			libgdk_pixbuf="libgdk-pixbuf-2.0-0"
+			;;
+		"heroku-24")
+			libasound="libasound2t64"
+			libatk_bridge="libatk-bridge2.0-0t64"
+			libatk="libatk1.0-0t64"
+			libatspi="libatspi2.0-0t64"
+			libgtk="libgtk-30t64"
+			libgdk_pixbuf="libgdk-pixbuf-2.0-0"
+			;;
+		*)
+			error "STACK must be 'heroku-18', 'heroku-20', 'heroku-22', or 'heroku-24'"
+			;;
+	esac
+
 	if [[ "$SUPPORTED_BROWSERS" == *"chromium"* ]]; then
 		cat << EOF >>$build_tmpdir/Aptfile
 # Chromium dependencies
 libnspr4
 libnss3
 libxss1
-libasound2
+$libasound
 fonts-noto-color-emoji
 libgbm1
-libatk-bridge2.0-0
+$libatk_bridge
 libxkbcommon0
 libxrandr2
-libatspi2.0-0
+$libatspi
 libxshmfence-dev
 EOF
 	fi
@@ -62,15 +88,15 @@ EOF
 	if [[ "$SUPPORTED_BROWSERS" == *"firefox"* || "$SUPPORTED_BROWSERS" == *"chromium"* ]]; then
 		cat << EOF >>$build_tmpdir/Aptfile
 # Needed by Firefox and Chromium
-libgdk-pixbuf2.0-0
+$libgdk_pixbuf
 libcairo-gobject2
 libpulse0
 libusb-1.0-0
-libatk1.0-0
+$libatk
 libxcomposite1
 libxdamage1
 libxfixes3
-libgtk-3-0
+$libgtk
 EOF
 	fi
 
@@ -90,8 +116,13 @@ EOF
 libvpx7
 EOF
 	    ;;
+		"heroku-24")
+	    cat << EOF >>$build_tmpdir/Aptfile
+libvpx9
+EOF
+	    ;;
 	  *)
-	    error "STACK must be 'heroku-18', 'heroku-20', or 'heroku-22'"
+	    error "STACK must be 'heroku-18', 'heroku-20', 'heroku-22', or 'heroku-24'"
 	esac
 
 	local cache_tmpdir=$(mktemp -d)
